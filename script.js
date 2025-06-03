@@ -67,14 +67,41 @@ const btnNew = document.querySelector(".btn--new");
 const btnRoll = document.querySelector(".btn--roll");
 const btnHold = document.querySelector(".btn--hold");
 
-const scores = [0, 0];
-let currentScore = 0;
-let activePlayer = 0;
-let isPlaying = true;
+let scores = [0, 0],
+  currentScore = 0,
+  activePlayer = 0,
+  isPlaying = true;
 
-diceEl.classList.add("hidden");
-score0.textContent = 0;
-score1.textContent = 0;
+function gameInitializer() {
+  scores = [0, 0];
+  currentScore = 0;
+  isPlaying = true;
+
+  score0.textContent = 0;
+  score1.textContent = 0;
+  current0.textContent = 0;
+  current1.textContent = 0;
+
+  diceEl.classList.add("hidden");
+  if (
+    document
+      .querySelector(`.player--${activePlayer}`)
+      .classList.contains("player--winner")
+  ) {
+    document
+      .querySelector(`.player--${activePlayer}`)
+      .classList.remove("player--winner");
+  }
+  activePlayer = 0;
+  if (!player0El.classList.contains("player--active")) {
+    player0El.classList.add("player--active");
+  }
+  if (player1El.classList.contains("player--active")) {
+    player1El.classList.remove("player--active");
+  }
+}
+
+gameInitializer();
 
 function switchPlayer() {
   document.getElementById(`current--${activePlayer}`).textContent = 0;
@@ -120,7 +147,7 @@ btnHold.addEventListener("click", function () {
     document.getElementById(`score--${activePlayer}`).textContent =
       scores[activePlayer];
 
-    if (scores[activePlayer] >= 20) {
+    if (scores[activePlayer] >= 100) {
       winningGame();
     } else {
       switchPlayer();
@@ -128,29 +155,4 @@ btnHold.addEventListener("click", function () {
   }
 });
 
-btnNew.addEventListener("click", function () {
-  diceEl.classList.add("hidden");
-  score0.textContent = 0;
-  score1.textContent = 0;
-  current0.textContent = 0;
-  current1.textContent = 0;
-  isPlaying = true;
-  if (
-    document
-      .querySelector(`.player--${activePlayer}`)
-      .classList.contains("player--winner")
-  ) {
-    document
-      .querySelector(`.player--${activePlayer}`)
-      .classList.remove("player--winner");
-  }
-  if (activePlayer === 1) {
-    switchPlayer();
-  }
-  if (!player0El.classList.contains("player--active")) {
-    player0El.classList.add("player--active");
-  }
-  if (player1El.classList.contains("player--active")) {
-    player1El.classList.remove("player--active");
-  }
-});
+btnNew.addEventListener("click", gameInitializer);
