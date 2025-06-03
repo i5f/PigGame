@@ -134,7 +134,23 @@ btnNew.addEventListener("click", function () {
   score1.textContent = 0;
   current0.textContent = 0;
   current1.textContent = 0;
+  isPlaying = true;
+  if (
+    document
+      .querySelector(`.player--${activePlayer}`)
+      .classList.contains("player--winner")
+  ) {
+    document
+      .querySelector(`.player--${activePlayer}`)
+      .classList.remove("player--winner");
+  }
   if (activePlayer === 1) {
     switchPlayer();
+  }
+  if (!player0El.classList.contains("player--active")) {
+    player0El.classList.add("player--active");
+  }
+  if (player1El.classList.contains("player--active")) {
+    player1El.classList.remove("player--active");
   }
 });
